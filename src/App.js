@@ -1,10 +1,11 @@
 import './App.css'
 import React, { useState } from 'react'
 import html2canvas from 'html2canvas';
+import demo from './demo.png'
 
 function App() {
-  let [image, setImage] = useState(null)
-  let [height, setHeight] = useState(100)
+  let [image, setImage] = useState(demo)
+  let [height, setHeight] = useState(200)
   let [rotate, setRotate] = useState(0)
   let [flip, setFlip] = useState(false)
   const printRef = React.useRef();
@@ -35,7 +36,7 @@ function App() {
       </h1>
 
       <h3>Em chọn hình từ máy tính nhen</h3>
-      <input type="file" onChange={(e) => setImage(e.target.files[0])} className="upload-button" />
+      <input type="file" onChange={(e) => setImage(e.target.files[0])} className="upload-button" accept='image/*' />
 
       <div className='group' style={{marginBottom: '40px'}}>
         <div className="group-child">
@@ -44,7 +45,7 @@ function App() {
             <input type="range" min="0" max="300" value={height} onChange={(e) => setHeight(e.target.value)} className="slider" />
             <span>{height}</span>
             {/* reset button */}
-            <button onClick={() => setHeight(100)} className="reset-button">Reset</button>
+            <button onClick={() => setHeight(200)} className="reset-button">Reset</button>
           </div>
         </div>
 
@@ -77,7 +78,7 @@ function App() {
       </div>
 
       <div className="image" ref={printRef}>
-        {image ? <img src={URL.createObjectURL(image)} alt="preview" style={{ height: height + 'px', transform: `rotate(${rotate}deg) ${flip ? 'scaleX(-1)' : ''}` }} />
+        {image ? <img src={typeof image === 'string' ? image : URL.createObjectURL(image)} alt="preview" style={{ height: height + 'px', transform: `rotate(${rotate}deg) ${flip ? 'scaleX(-1)' : ''}` }} />
           : <p>Chọn hình xong nó hiện dô đây</p>
         }  
       </div>
