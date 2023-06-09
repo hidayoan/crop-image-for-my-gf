@@ -2,12 +2,15 @@ import './App.css'
 import React, { useState } from 'react'
 import html2canvas from 'html2canvas';
 import demo from './demo.png'
+import { ChromePicker } from 'react-color';
 
 function App() {
   let [image, setImage] = useState(demo)
   let [height, setHeight] = useState(200)
   let [rotate, setRotate] = useState(0)
   let [flip, setFlip] = useState(false)
+  let [color, setColor] = useState('#ffffff')
+
   const printRef = React.useRef();
 
   const handleDownloadElementToImage = async () => {
@@ -27,6 +30,10 @@ function App() {
     }
   }
 
+  const handleChangeColor = (e) => {
+    setColor(e.target.value)
+  }
+
 
   return (
     <div className="App">
@@ -38,7 +45,7 @@ function App() {
       <h3>Em chọn hình từ máy tính nhen</h3>
       <input type="file" onChange={(e) => setImage(e.target.files[0])} className="upload-button" accept='image/*' />
 
-      <div className='group' style={{marginBottom: '40px'}}>
+      <div className='group' style={{ marginBottom: '40px' }}>
         <div className="group-child">
           <h3>Em đổi size hình ở đây nè</h3>
           <div className='group'>
@@ -57,11 +64,20 @@ function App() {
             {/* reset button */}
             <button onClick={() => setRotate(0)} className="reset-button">Reset</button>
           </div>
-        </div>  
+        </div>
+
+        <div className="group-child">
+          <h3>Em đổi màu hình ở đây nè</h3>
+          <div className='group'>
+            <ChromePicker color={color} onChangeComplete={handleChangeColor} />
+            {/* reset button */}
+          </div>
+          <button className="reset-button" style={{marginTop: 20}} onClick={() => setColor('#ffffff')}>Reset</button>
+        </div>
       </div>
-      
-      <div className="group" style={{marginBottom: '40px'}}>
-        <h3 style={{marginRight: '20px'}}>Em lật hình ở đây nè</h3>
+
+      <div className="group" style={{ marginBottom: '40px' }}>
+        <h3 style={{ marginRight: '20px' }}>Em lật hình ở đây nè</h3>
         <div className="toggle-switch">
           <input
             type="checkbox"
@@ -77,10 +93,10 @@ function App() {
         </div>
       </div>
 
-      <div className="image" ref={printRef}>
+      <div className="image" ref={printRef} style={{ backgroundColor: color }}>
         {image ? <img src={typeof image === 'string' ? image : URL.createObjectURL(image)} alt="preview" style={{ height: height + 'px', transform: `rotate(${rotate}deg) ${flip ? 'scaleX(-1)' : ''}` }} />
           : <p>Chọn hình xong nó hiện dô đây</p>
-        }  
+        }
       </div>
 
       <h3>Chỉnh vừa mắt xong nhấn dô đây lưu hình lại</h3>
